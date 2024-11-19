@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clonar Repositório') {
             steps {
-                git 'https://github.com/Badizan/Projeto-flask-ci-cd.git'
+                git branch: 'main', url: 'https://github.com/Badizan/Projeto-flask-ci-cd.git'
             }
         }
         stage('Construir Imagens Docker') {
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 sh '''
                 curl -X POST -H "Content-Type: application/json" \
-                -d '{"nome":"Aluno","sobrenome":"Teste","turma":"Turma1","disciplinas":"Matemática"}' \
+                -d '{"nome":"Teste","sobrenome":"Aluno","turma":"Turma1","disciplinas":"Matemática"}' \
                 http://localhost:5000/alunos
                 '''
             }
@@ -32,3 +32,4 @@ pipeline {
         }
     }
 }
+
