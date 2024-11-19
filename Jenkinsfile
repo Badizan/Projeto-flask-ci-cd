@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clonar Repositório') {
+            steps {
+                git 'https://github.com/Badizan/Projeto-flask-ci-cd.git'
+            }
+        }
+        stage('Construir Imagens Docker') {
+            steps {
+                sh 'docker-compose build'
+            }
+        }
+        stage('Subir Contêineres') {
+            steps {
+                sh 'docker-compose up -d'
+            }
+        }
+        stage('Testar Aplicação') {
+            steps {
+                sh '''
+                curl -X POST -H "Content-Type: application/json" \
+                -d '{"nome":"Aluno","sobrenome":"Teste","turma":"Turma1","disciplinas":"Matemática"}' \
+                http://localhost:5000/alunos
+                '''
+            }
+        }
+        stage('Desligar Contêineres') {
+            steps {
+                sh 'docker-compose down'
+            }
+        }
+    }
+}
